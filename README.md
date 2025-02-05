@@ -47,3 +47,7 @@ orders (3660000 rows) --> Postgres, Kafka
       ```shell
       pytest -vv -s .\tests\test_init_scripts.py::test_publish_data_to_kafka
       ```
+
+## Getting Started
+
+- Add the Kafka cluster to UI (http://localhost:8080/) by config value: `kafka:9092`
