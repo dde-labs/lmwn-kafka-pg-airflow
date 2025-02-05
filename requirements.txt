@@ -1,0 +1,11 @@
+# Security
+python-dotenv==1.0.1
+
+# Test
+pytest==8.3.4
+
+# Provide from assignment
+confluent-kafka==2.8.0
+pandas==2.2.3
+psycopg2==2.9.10
+SQLAlchemy==2.0.37
