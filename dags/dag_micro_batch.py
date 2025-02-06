@@ -10,12 +10,13 @@ from airflow.providers.apache.kafka.operators.consume import ConsumeFromTopicOpe
 def consume_coupons_func(message):
     message_content = json.loads(message.value())
     df = pd.DataFrame.from_dict(message_content)
+    # TODO: Save data to target table via SQL Delete & Merge statement
 
 
-def consume_coupons_func(message):
+def consume_orders_func(message):
     message_content = json.loads(message.value())
     df = pd.DataFrame.from_dict(message_content)
-
+    # TODO: Save data to target table via SQL Delete & Insert statement
 
 
 @dag(
@@ -29,7 +30,7 @@ def micro_batch_kafka():
         task_id="consume_coupons",
         kafka_config_id="kafka_default",
         topics=["coupons"],
-        apply_function=consume_function,
+        apply_function=consume_coupons_func,
         poll_timeout=60,
         max_messages=10_000,
         max_batch_size=10_000,
@@ -39,7 +40,7 @@ def micro_batch_kafka():
         task_id="consume_orders",
         kafka_config_id="kafka_default",
         topics=["orders"],
-        apply_function=consume_function,
+        apply_function=consume_orders_func,
         poll_timeout=60,
         max_messages=10_000,
         max_batch_size=10_000,

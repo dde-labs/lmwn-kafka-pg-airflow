@@ -57,11 +57,11 @@ orders (3660000 rows) --> Postgres, Kafka
 
 - Add the [Kafka cluster to UI](http://localhost:8080/) by config: `kafka:9092`
 
-- Create the model tables for receive raw data
+- Create the model and stream tables for receive raw data from batch and micro-batch DAGs
 
 ## Getting Started
 
-- Go to Airflow UI and start running 
+- Go to Airflow UI and start running
 
 ## Issue
 

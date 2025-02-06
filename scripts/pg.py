@@ -52,3 +52,45 @@ def reload_data_to_pg(url: URL, base_path: Path):
         )
         df = pd.read_sql(f"select count(1) as cnt from {table}", con=eng)
         print(f"Imported {df['cnt'][0]} rows")
+
+
+def create_model_to_pg(url: URL, base_path: Path):
+
+    conn = psycopg2.connect(
+        host=url.host,
+        dbname=url.database,
+        user=url.username,
+        password=url.password or "",
+        port=url.port,
+    )
+    cur = conn.cursor()
+
+    for i in range(2):
+
+        for table_file in (
+            base_path / f"assignments/problem-{i + 1}"
+        ).glob('*.sql'):
+
+            if not table_file.is_file():
+                continue
+
+            table: str = table_file.name
+
+            if table.startswith('view'):
+                # TODO: Create view
+                continue
+
+            print(f"Drop table {table}")
+            cur.execute(f"DROP TABLE IF EXISTS {table};")
+
+            print(f"Create table {table}")
+            with open(table_file, encoding='utf-8') as f:
+                sql: str = "".join(f.readlines())
+                assert sql != "", (
+                    "Found empty SQL, please make sure that you fill in table schema "
+                    "in coupons.sql or orders.sql files."
+                )
+                print(sql)
+                cur.execute(query=sql)
+            conn.commit()
+            conn.close()
