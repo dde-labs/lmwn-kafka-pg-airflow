@@ -17,23 +17,29 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    networks:
+      - kafka_network
 
   kafka-ui:
     container_name: kafka-ui
     image: provectuslabs/kafka-ui:latest
     ports:
-      - 8080:8080
+      - '8080:8080'
     environment:
       DYNAMIC_CONFIG_ENABLED: 'true'
+    networks:
+      - kafka_network
       
   postgresql:
     image: docker.io/bitnami/postgresql:17
     ports:
-      - '5432:5432'
+      - '5433:5432'
     volumes:
       - 'postgresql_data:/bitnami/postgresql'
     environment:
       - 'ALLOW_EMPTY_PASSWORD=yes'
+    networks:
+      - kafka_network
 
 volumes:
   kafka_data:
@@ -41,3 +47,8 @@ volumes:
 
   postgresql_data:
     driver: local
+
+networks:
+  kafka_network:
+    name: airflow
+    driver: bridge

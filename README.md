@@ -1,4 +1,4 @@
-# LMWN: kafka-pg-airflow
+# LMWN: Kafka Postgres via Airflow
 
 **LMWN Assignment** that Extract & Load data from Postgres and Kafka via Airflow.
 
@@ -26,6 +26,12 @@ orders (3660000 rows) --> Postgres, Kafka
     LOCAL_KAFKA_HOST="localhost:9094"
     ```
 
+- Provision Airflow
+
+    ```shell
+    docker build -t airflow-local -f .\.container\Dockerfile . 
+    ```
+
 - Provision Docker container for source services
 
     ```shell
@@ -51,3 +57,7 @@ orders (3660000 rows) --> Postgres, Kafka
 ## Getting Started
 
 - Add the Kafka cluster to UI (http://localhost:8080/) by config value: `kafka:9092`
+
+## Clear
+
+docker compose -f ./.container/docker-compose.yml --env-file .env down

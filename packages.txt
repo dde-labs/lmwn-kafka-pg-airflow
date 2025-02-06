@@ -1,0 +1,3 @@
+curl
+openjdk-17-jdk
+ant
