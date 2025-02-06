@@ -11,4 +11,4 @@ psycopg2==2.9.10
 SQLAlchemy==2.0.37
 
 # Same as Airflow
--r requirements.airflow.txt
+# -r requirements.airflow.txt
