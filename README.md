@@ -8,7 +8,7 @@ orders (3660000 rows) --> Postgres, Kafka
 ```
 
 > [!NOTE]
-> This assignment use python version `3.11`.
+> This assignment use python version `3.9`.
 
 ## Prerequisite
 
@@ -29,7 +29,8 @@ orders (3660000 rows) --> Postgres, Kafka
 - Provision Airflow
 
     ```shell
-    docker build -t airflow-local -f .\.container\Dockerfile . 
+    docker build -t airflow-local -f .\.container\Dockerfile .
+    docker compose -f ./.container/docker-compose.airflow.yml --env-file .env up -d
     ```
 
 - Provision Docker container for source services
@@ -54,10 +55,32 @@ orders (3660000 rows) --> Postgres, Kafka
       pytest -vv -s .\tests\test_init_scripts.py::test_publish_data_to_kafka
       ```
 
+- Add the [Kafka cluster to UI](http://localhost:8080/) by config: `kafka:9092`
+
+- Create the model tables for receive raw data
+
 ## Getting Started
 
-- Add the Kafka cluster to UI (http://localhost:8080/) by config value: `kafka:9092`
+- Go to Airflow UI and start running 
+
+## Issue
+
+I still stuck the spark installation issue when I want to install it on my airflow image.
+
+```shell
+(.venv) uv pip install pyspark
+ x Failed to download and build `pyspark==3.5.4`
+  |-> Failed to extract archive
+  |-> failed to unpack `C:\Users\korawica\AppData\Local\uv\cache\sdists-v7\.tmp2Lg8cG\pyspark-3.5.4\deps\jars\JTransforms-3.1.jar`
+  |-> failed to unpack `pyspark-3.5.4/deps/jars/JTransforms-3.1.jar` into `C:\Users\korawica\AppData\Local\uv\cache\sdists-v7\.tmp2Lg8cG\pyspark-3.5.4\deps\jars\JTransforms-3.1.jar`
+  |-> error decoding response body
+  |-> request or response body error
+  `-> operation timed out
+```
 
 ## Clear
 
+```shell
 docker compose -f ./.container/docker-compose.yml --env-file .env down
+docker compose -f ./.container/docker-compose.airflow.yml --env-file .env down
+```

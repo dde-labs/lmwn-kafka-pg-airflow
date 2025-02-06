@@ -4,18 +4,23 @@ USER root
 
 COPY ./packages.txt /
 
-# NOTE: Install OpenJDK-17
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         wget \
     && grep -vE '^\s*#' /packages.txt | sed -e 's/\r//g' | tr "\n" " " | xargs sudo apt-get install -y \
     && apt-get autoremove -yqq --purge \
-    && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
-# NOTE: Set JAVA_HOME
+RUN apt-get update \
+    && apt-get install -y openjdk-17-jdk-headless \
+    && apt-get install -y ant \
+    && apt-get clean \
+
 ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64/
 RUN export JAVA_HOME
+
+RUN wget https://jdbc.postgresql.org/download/postgresql-42.2.5.jar
+RUN mv postgresql-42.2.5.jar /opt/spark/jars
 
 USER airflow
 
@@ -28,4 +33,4 @@ COPY --chown=airflow:root ./requirements.airflow.txt /
 RUN uv pip install  \
     --no-cache-dir \
     "apache-airflow==${AIRFLOW_VERSION}" \
-    -r /requirements.airflow.txt
+    -r ./requirements.airflow.txt
