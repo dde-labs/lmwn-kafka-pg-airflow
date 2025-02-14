@@ -1,6 +1,6 @@
 x-airflow-common:
   &airflow-common
-  image: airflow-local
+  image: airflow-image-local
   environment:
     &airflow-common-env
     AIRFLOW_CONFIG: '/opt/airflow/airflow.cfg'

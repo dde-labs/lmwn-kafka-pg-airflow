@@ -54,7 +54,7 @@ def reload_data_to_pg(url: URL, base_path: Path):
         print(f"Imported {df['cnt'][0]} rows")
 
 
-def create_model_to_pg(url: URL, base_path: Path):
+def create_models_and_streams_to_pg(url: URL, base_path: Path):
 
     conn = psycopg2.connect(
         host=url.host,

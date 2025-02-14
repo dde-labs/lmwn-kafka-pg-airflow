@@ -2,34 +2,43 @@
 
 **LMWN Assignment** that Extract & Load data from Postgres and Kafka via Airflow.
 
+**Sizing data for this assignment:**
+
 ```text
 coupons (465 rows)    --> Postgres, Kafka
 orders (3660000 rows) --> Postgres, Kafka
 ```
 
 > [!NOTE]
-> This assignment use python version `3.9`.
+> This assignment use python version `3.9` for testing.
+
+> [!NOTE]
+> Spark and Hadoop versions follow the versions as defined at [Spark Download Page](https://spark.apache.org/downloads.html)
 
 ## Prerequisite
 
-- Install necessary Python package on your virtual environment.
+- Install necessary Python packages on your Python virtual environment.
 
     ```shell
     (.vnev) pip install -U uv
     (.vnev) uv pip install -r ./requirements.txt
     ```
 
-- Create `.env` file
+- Create the `.env` file for keep credential and connection values.
 
     ```dotenv
     LOCAL_PG_URL="postgresql+psycopg2://postgres@localhost:5432/postgres"
     LOCAL_KAFKA_HOST="localhost:9094"
     ```
 
-- Provision Airflow
+- Provision the Airflow containers
+
+    > [!WARNING]
+    > This step, I still got the error when install Pyspark on the building Docker
+    > image.
 
     ```shell
-    docker build -t airflow-local -f .\.container\Dockerfile .
+    docker build --rm --force-rm -t airflow-image-local -f .\.container\Dockerfile .
     docker compose -f ./.container/docker-compose.airflow.yml --env-file .env up -d
     ```
 
@@ -59,9 +68,13 @@ orders (3660000 rows) --> Postgres, Kafka
 
 - Create the model and stream tables for receive raw data from batch and micro-batch DAGs
 
+  ```shell
+  pytest -vv -s .\tests\test_init_models_and_streams.py::test_create_models_and_streams
+  ```
+
 ## Getting Started
 
-- Go to Airflow UI and start running
+- Go to the Airflow UI and start navigate to the batch DAG and run it.
 
 ## Issue
 
@@ -77,6 +90,9 @@ I still stuck the spark installation issue when I want to install it on my airfl
   |-> request or response body error
   `-> operation timed out
 ```
+
+After I investigate this issue, it might be permission of my cache folder because
+when I try to install via `uv pip install pyspark --target ./installed`, it worked!!!.
 
 ## Clear
 
