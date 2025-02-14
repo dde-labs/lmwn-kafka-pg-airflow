@@ -10,7 +10,7 @@ orders (3660000 rows) --> Postgres, Kafka
 ```
 
 > [!NOTE]
-> This assignment use python version `3.9` for testing.
+> This assignment use python version `3.9` and WSL Docker on Windows11 for testing.
 
 > [!NOTE]
 > Spark and Hadoop versions follow the versions as defined at [Spark Download Page](https://spark.apache.org/downloads.html)
@@ -38,7 +38,10 @@ orders (3660000 rows) --> Postgres, Kafka
     > image.
 
     ```shell
-    docker build --rm --force-rm -t airflow-image-local -f .\.container\Dockerfile .
+    docker build --rm --force-rm `
+      -t airflow-image-local `
+      -f .\.container\Dockerfile . `
+      --build-arg AIRFLOW_VERSION=2.10
     docker compose -f ./.container/docker-compose.airflow.yml --env-file .env up -d
     ```
 
