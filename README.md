@@ -41,7 +41,7 @@ orders (3660000 rows) --> Postgres, Kafka
     docker build --rm --force-rm `
       -t airflow-image-local `
       -f .\.container\Dockerfile . `
-      --build-arg AIRFLOW_VERSION=2.10
+      --build-arg AIRFLOW_VERSION=2.10.4
     docker compose -f ./.container/docker-compose.airflow.yml --env-file .env up -d
     ```
 
